@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on James Drury</title>
+    <link>jdrury.github.io/post/</link>
+    <description>Recent content in Posts on James Drury</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 17 Feb 2018 17:46:37 -0500</lastBuildDate>
+    
+	<atom:link href="jdrury.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tutorial: adding a new component to an AngularJS 1.5&#43; app</title>
+      <link>jdrury.github.io/post/angularjs-1.5-architecture/</link>
+      <pubDate>Sat, 17 Feb 2018 17:46:37 -0500</pubDate>
+      
+      <guid>jdrury.github.io/post/angularjs-1.5-architecture/</guid>
+      <description>The design and implementation of AngularJS applications has evolved signicantly since the framework hit 1.0 in June, 2012.
+In the early period, most applications were written with the ng-controller paradigm. A controller was attached to a template, and the template had access to the controller&amp;rsquo;s $scope. Child controllers would inherit the $scope of parent controllers.
+But as the community grew and the needs of Single Page Applications matured, the ng-controller paradigm hit a wall.</description>
+    </item>
+    
+  </channel>
+</rss>

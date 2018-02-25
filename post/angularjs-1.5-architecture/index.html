@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Tutorial: adding a new component to an AngularJS 1.5&#43; app &middot; James Drury</title>
+
+  
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/poole-overrides.css">
+  <link rel="stylesheet" href="/css/hyde-overrides.css">
+  <link rel="stylesheet" href="/css/hyde-x.css">
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/touch-icon-144-precomposed.png">
+  <link href="/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>James Drury</h1>
+      
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="/">Blog</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/jdrury"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      <a href="https://stackoverflow.com/users/2954463/user2954463"><i class="fa fa-stack-overflow fa-3x"></i></a>
+      <a href="https://www.linkedin.com/in/jd6377/"><i class="fa fa-linkedin-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2018 <a href="/license/">License</a><br/>
+
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Tutorial: adding a new component to an AngularJS 1.5&#43; app</h1>
+    
+
+<p>The design and implementation of AngularJS applications has evolved signicantly since the framework hit 1.0 in June, 2012.</p>
+
+<p>In the early period, most applications were written with the <code>ng-controller</code> paradigm. A controller was attached to a template, and the template had access to the controller&rsquo;s <code>$scope</code>. Child controllers would inherit the <code>$scope</code> of parent controllers.</p>
+
+<p>But as the community grew and the needs of Single Page Applications matured, the <code>ng-controller</code> paradigm hit a wall. Two-way binding, once the killer feature of AngularJS, had become a liability, and the complicated relationship between controllers, templates and child controllers gained the unsavory nickname <a href="https://teropa.info/blog/2014/10/24/how-ive-improved-my-angular-apps-by-banning-ng-controller.html">$scope soup</a>.</p>
+
+<p>A new SPA paradigm emerged: one-way binding with component-based architecture. Google formally acknowledged this shift with the introduction of components in the <a href="https://docs.angularjs.org/guide/migradtion#migrating-from-1.4-to-1.5">1.5 release</a> of AngularJS.</p>
+
+<p>In this tutorial, we will look at the best practices for adding a new component to an existing AngularJS application.</p>
+
+<p>We will make the assumption that the app is using Babel to take advantage of ES6 syntax.</p>
+
+<h1 id="the-sample-application">The sample application</h1>
+
+<p>//TODO</p>
+
+<p>Let&rsquo;s create a simple counter component with an input and two buttons that increment the value of the input model.</p>
+
+<h1 id="step-1-create-the-component">Step 1: create the component</h1>
+
+<p>The first step is to create a new javascript file for our component controller. This file will be where most of the template logic occurs. It&rsquo;s also where we will define component bindings and dependencies.</p>
+
+<p><code>cd</code> into the module you want to add the component. Since this is a pretty generic component, it might make sense for you to add it to the <code>common</code> module.</p>
+
+<pre><code>|-dist
+|-node_modules
+|-src
+| |-modules
+|   |-common
+|     |-counter
+|       |&lt;NEW FILE HERE&gt;
+</code></pre>
+
+<p>We create a new directory that&rsquo;s going to house all the parts of our component - the logic, the view and the styles.</p>
+
+<p>Create a new file called <code>counter.component.js</code>.</p>
+
+<p>Inside the file, add the boilerplate for the component controller. It should look something like this.</p>
+
+<pre><code class="language-javascript">class Counter {
+  constructor() {
+    this.testValue = &quot;Hello world!&quot;:
+  }
+  
+  increment() {
+    //TODO
+  } 
+
+  decrement() {
+    //TODO
+  } 
+}
+</code></pre>
+
+<p>Above we can see the basic skeleton for our UI logic. Now we have to organize that logic into a way that AngularJS can understand.</p>
+
+<h2 id="step-2-define-the-component-config-and-export-it">Step 2: Define the component config and export it</h2>
+
+<p>Define the component config object at the bottom of the file:</p>
+
+<pre><code>export const componentConfig = {
+  controller: Counter,
+  controllerAs: 'vm',
+  template: `&lt;div&gt;{{ vm.testValue }}&lt;/div&gt;`,
+};
+</code></pre>
+
+<p>The component config is a set of options that tells AngularJS how to bootstrap the counter component. We have included the basic options required to get the component going.</p>
+
+<p>The complete file should look like this:</p>
+
+<pre><code class="language-javascript">// ./src/modules/common/counter/counter.component.js
+
+class Counter {
+  constructor() {
+    this.testValue = &quot;Hello world!&quot;:
+  }
+  
+  increment() {
+    //TODO
+  } 
+
+  decrement() {
+    //TODO
+  } 
+}
+
+export const componentConfig = {
+  controller: Counter,
+  controllerAs: 'vm',
+  template: `&lt;div&gt;{{ vm.testValue }}&lt;/div&gt;`,
+};
+</code></pre>
+
+<h2 id="step-3-register-the-component-with-a-module">Step 3: Register the component with a module</h2>
+
+<p>We&rsquo;ve finished the basic skeleton for our component, but it&rsquo;s not attached to our angular application.</p>
+
+<p>We need to let Angular know about our new component.</p>
+
+<p>To do that, we need to register our component with one of the modules in the Angular app.</p>
+
+<p>Let&rsquo;s imagine the <code>common</code> directory has a base module called <code>common.module.js</code>. We can register our component there.</p>
+
+<p>Inside the module file, we should see a list of other components, filters, services that have been defined. We can add our new counter component to the list by importing the component config defined earlier, and chaining it to the <code>angular.module</code> definition.</p>
+
+<pre><code>// ./src/modules/common/common.module.js
+import { componentConfig as counterComponentConfig } from './counter/counter.component';
+
+angular.module('app.common', [
+    ...module dependencies
+  ])
+  .service('foobar', asfdasdf)
+  .component('jdComponent', counterComponentConfig)
+  ;
+
+</code></pre>
+
+<p>What&rsquo;s going on here?</p>
+
+<p>The first argument, <code>jdCounter</code>, registers our counter component with Angular. Angular now knows about this component and will make it available as <code>jdCounter</code>. If any other components want to include Counter as a child component, they will need to use the <code>jdCounter</code> name.</p>
+
+<blockquote>
+<p><strong>Take note!</strong> Inside javascript files, Angular uses camelcase for component names. But if we want to refer to this component in HTML, we need to use dash case: <code>jd-counter</code>. We will go over this again later.</p>
+</blockquote>
+
+<p>The second argument <code>counterComponentConfig</code> is the javascript object we defined at the bottom of <code>counter.component.js</code>.</p>
+
+<p>We chose to alias the imported config name to <code>counterComponentConfig</code> to distinguish it from any other component configs imported in this file.</p>
+
+<p>Couple of things to note here:</p>
+
+<ol>
+<li>I called our common module <code>app.common</code> to signify that it is the child module of a root module called <code>app</code>. We haven&rsquo;t mentioned the app module anywhere in this tutorial, that&rsquo;s just a common convention I&rsquo;m following. (if you were building a cookbook app, you might call this <code>cookbook.common</code>).</li>
+</ol>
+
+<h2 id="step-4-add-your-component-to-the-dom">Step 4: Add your component to the DOM</h2>
+
+<p>In the last three steps, we did the bare minimum to create a new component and register it with Angular. Now it&rsquo;s time to see if our new component will render on the web page.</p>
+
+<p>The easiest way to do this is to add our component to an existing component. In this case, we will just add our component to the root index.html file.</p>
+
+<pre><code>&lt;!-- ./src/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+...
+&lt;body ng-app=&quot;app&quot;&gt;
+  &lt;!-- make sure you add the new component inside the angular app --&gt;
+
+  &lt;jd-counter&gt;&lt;/jd-counter&gt;
+
+&lt;/body
+</code></pre>
+
+<p>Wait, didn&rsquo;t we call our component <code>jdCounter</code> when we registered it with Angular?</p>
+
+<p>The convention is to use camelcase while in javasript files and dash case while in html files. So <code>jdCounter</code> becomes <code>jd-counter</code>. This convention must be memorized is a common source of bugs. I still sometimes register my components like <code>.component('jd-counter', ...)</code>.</p>
+
+<p>Run your npm script to compile your javascript. Visit the web page and you should see the words &ldquo;Hello World&rdquo; on your screen.</p>
+
+<h2 id="act-on-it">Act on it!</h2>
+
+<p>We&rsquo;ve created the boilerplate for our component and registed it with AngularJS.</p>
+
+<p>We still have some work to do before it works like a real counter.</p>
+
+<p>On your own, try adding the remaining features.</p>
+
+<ol>
+<li>add an input element (with type=&ldquo;text&rdquo;) to the counter template</li>
+<li>create a new class property (e.g. &lsquo;counterVal&rdquo;) in the Counter class and bind it to the input value</li>
+<li>add a button element that increments the input value on click</li>
+<li>add a button element that increments the input value on click</li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this tutorial, we have seen how we can add a new component to an existing module. By adding new logic/html into a dedicated component, the integrity of the existing codebase is less ikey to decay.</p>
+
+<p>Most developers see the changes in Angular 1.5 as a temporary change made to prepare for the ultimate destination&ndash;Angular 2+. But for many applications, simply upgrading to AngularJS 1.5 and refactoring controllers into component is good enough.</p>
+
+<h2 id="read-more">Read more</h2>
+
+<p><a href="https://teropa.info/blog/2015/10/18/refactoring-angular-apps-to-components.html">Refactoring Angular Apps to Component Style</a></p>
+
+  </div>
+</div>
+
+</body>
+</html>
+
